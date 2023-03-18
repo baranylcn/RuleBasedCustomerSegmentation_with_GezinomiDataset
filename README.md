@@ -1,5 +1,5 @@
 # Rule Based Customer Segmentation 
-## Here is the dataset from Gezinomi
+## Gezinomi Dataset
 
 ![image](https://user-images.githubusercontent.com/98966968/226106631-2920e13e-53b0-4c00-ac8b-7ed956c942b7.png)
 
