@@ -48,7 +48,7 @@ df.head()
 
 
 df.drop(["SaleCheckInDayDiff"], axis=1, inplace=True)
-# Dropped the SaleCheckInDayDiff variable as it is not needed anymore.
+# SaleCheckInDayDiff variable dropped as it is not needed anymore.
 
 
 cat_cols = [col for col in df.columns if df[col].dtypes in ["boolean", "category", "object"]]
@@ -64,7 +64,7 @@ def cat_summary(dataframe, col_name, plot=False):
     if plot:
       sns.countplot(x=dataframe[col_name], data=dataframe)
       plt.show(block=True)
-# Created a function that returns the value counts and ratios of the variables.
+# A function that returns the value counts and ratios of the variables created.
 
 
 
@@ -72,7 +72,7 @@ def cat_summary(dataframe, col_name, plot=False):
 for col in cat_cols:
     print("#########################################")
     cat_summary(df, col, plot=True)
-#The created function is applied for all values.
+# The created function is applied for all values.
 
 
 
@@ -84,7 +84,7 @@ df.groupby(["SaleCityName","ConceptName"])["Price"].mean()
 df.isnull().sum()
 
 df[df["Price"].isnull()]
-#Missing values
+# Missing values
 
 
 
@@ -153,7 +153,7 @@ print("Upper limit:", upper_limit)
 
 outliers = df[(df["Price"] < lower_limit) | (df["Price"] > upper_limit)]
 outliers.head()
-#Outlier table
+# Outlier table
 
 
 
@@ -163,7 +163,7 @@ outliers["SaleCityName"].value_counts()
 outliers["ConceptName"].value_counts()
 outliers["Seasons"].value_counts()
 outliers.groupby("ConceptName")["Seasons"].value_counts()
-# It seems that there is a pile of "All Inclusive" and "High" attributes.
+# It seems that there is a pile of "All Included" and "High" attributes.
 
 
 
@@ -171,13 +171,13 @@ outliers.groupby("ConceptName")["Seasons"].value_counts()
 outlier_list = []
 for i in outliers.index:
     outlier_list.append(i)
-# Created a list of outliers
+# A list of outliers created.
 
 
 
 mean = outliers[outliers["ConceptName"]=="All Included"]["Price"].mean()
 df.loc[outlier_list, "Price"] = mean
-# Outliers were replaced by the average of the "All Inclusive" attribute.
+# Outliers were replaced by the average of the "All Included" attribute.
 
 df.describe([0.75,0.80,0.85,0.90]).T
 sns.histplot(df["Price"]);
@@ -192,7 +192,7 @@ agg_df.reset_index(inplace=True)
 # A new table was created according to the average of the specified variables.
 
 
-#Let's create segments according to price ranges.
+# Let's create segments according to price ranges.
 agg_df["SEGMENT"] = pd.qcut(agg_df["Price"], 4, labels=["D","C","B","A"])
 
 
@@ -200,21 +200,21 @@ agg_df["SEGMENT"] = pd.qcut(agg_df["Price"], 4, labels=["D","C","B","A"])
 
 agg_df["sales_level_based"] = agg_df[["SaleCityName","ConceptName","Seasons", "EB_Score" ]].agg(lambda x: "_".join(x).upper(),axis=1)
 agg_df.head()
-# A new column named "sales_level_based" has been created. Here is the information of the data will be formed together.
+# A new column named "sales_level_based" has been created. Here is the information of the data to be formed together.
 
 
 
 def customer_info(*args):
     values = "_".join(args).upper()
     return agg_df[agg_df["sales_level_based"]==values]
-# A function was created to provide price and segment information when we wrote the attribute.
+# A function was created to provide price and segment information when the attribute was written.
 
 
 
 
 
+# RESULT: When a new customer arrives and when we write the customer's information into the function, it will return the segment and price information of the new customer.
 
-# RESULT: If a new customer arrives, when we write the customer's information into the function, it will return the segment and price information of the new customer.
-
+   
 # EXAMPLE
 customer_info("antalya","all included", "low", "early bookers")
