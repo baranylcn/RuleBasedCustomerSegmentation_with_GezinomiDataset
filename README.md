@@ -3,14 +3,14 @@
 
 ![image](https://user-images.githubusercontent.com/98966968/226106631-2920e13e-53b0-4c00-ac8b-7ed956c942b7.png)
 
-### Dropping the variables that are not needed and categorizing the SaleCheckInDiff variable
+#### Dropping the variables that are not needed and categorizing the SaleCheckInDiff variable
 
 ![image](https://user-images.githubusercontent.com/98966968/226115482-405d8231-6311-4526-b6bd-dc371e9634ec.png)
 
 These variables were dropped because they would not be useful for our purposes. 
-Created a new column for categorize SaleCheckInDiff.
+A new column created for categorizing SaleCheckInDiff.
 
-### Filling in missing values
+### Filling In Missing Values
 Missing values were filled with the mean of other data that met the criteria for missing values.
 Thus every missing value has been filled according to their criteria.
 
@@ -22,15 +22,15 @@ Thus every missing value has been filled according to their criteria.
 
 ![image](https://user-images.githubusercontent.com/98966968/226110217-b3fecb6a-54e4-4ef7-918f-9a1b870faf1c.png)
 
-Outliers found, reviewed and were replaced by the average of the "All Inclusive" attribute.
+Outliers found, reviewed and were replaced by the average of the "All Included" attribute.
 There are no outliers anymore.
 
 ![image](https://user-images.githubusercontent.com/98966968/226113264-93317f7f-1860-484f-ad64-c8fb901b9ed8.png)
 
-### Creating a column for level based segmenetation
+### Creating a Column For Level Based Segmenetation
 ![image](https://user-images.githubusercontent.com/98966968/226113661-8d3bdafc-bd3b-4288-a9e5-60ca9ec62cc5.png)
 
-### Creating a function
+### Creating a Function
 
 Example :
 
