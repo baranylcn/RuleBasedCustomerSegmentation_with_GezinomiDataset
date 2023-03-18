@@ -1,8 +1,222 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module type="PYTHON_MODULE" version="4">
-  <component name="NewModuleRootManager">
-    <content url="file://$USER_HOME$/OneDrive/Masaüstü/cst_segmentation.py" />
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-</module>
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+df = pd.read_csv("Gezinomi.csv",sep=";")
+df.head()
+
+
+df.drop("SaleId", axis=1, inplace=True)
+df.drop("SaleDate", axis=1, inplace=True)
+df.drop("CheckInDate", axis=1, inplace=True)
+df.drop("CInDay", axis=1, inplace=True)
+# These variables were dropped because they would not be useful for our purposes
+
+
+
+df.head()
+
+df.dtypes   # Price column is object.
+
+df["Price"] = df["Price"].str.replace(",",".").astype("float")
+# Converted "object" to "float"
+
+
+
+def check_df(data,head=5):
+    print("################ SHAPE ################")
+    print(data.shape, "\n")
+    print("################ TYPE ################")
+    print(data.dtypes, "\n")
+    print("################ HEAD ################")
+    print(data.head(), "\n")
+    print("################ TAIL ################")
+    print(data.tail(), "\n")
+    print("################ EKSIK DEĞER ################")
+    print(data.isnull().any())
+    print(data.isnull().sum(), "\n")
+    print("################ DESCRIBE ################")
+    print(data.describe().T, "\n")
+# A function has been created that will give information about dataframe.
+
+check_df(df)
+
+
+
+# Grouping the SaleCheckInDayDiff variable as a categorical variable.
+bins = [-1,7,30,90,max(df["SaleCheckInDayDiff"])]
+labels = ["Last Minutes","Potential Planners","Planners","Early Bookers"]
+df["EB_Score"] = pd.cut(df["SaleCheckInDayDiff"], bins, labels=labels)
+
+df.head()
+
+
+df.drop(["SaleCheckInDayDiff"], axis=1, inplace=True)
+# Dropped the SaleCheckInDayDiff variable as it is not needed anymore.
+
+
+cat_cols = [col for col in df.columns if df[col].dtypes in ["boolean", "category", "object"]]
+cat_cols
+#Categorical variables made into a list.
+
+
+
+
+def cat_summary(dataframe, col_name, plot=False):
+    print(pd.DataFrame({col_name: dataframe[col_name].value_counts(),
+          "Ratio" : 100*dataframe[col_name].value_counts() / len(dataframe[col_name])}))
+    if plot:
+      sns.countplot(x=dataframe[col_name], data=dataframe)
+      plt.show(block=True)
+# Created a function that returns the value counts and ratios of the variables.
+
+
+
+
+for col in cat_cols:
+    print("#########################################")
+    cat_summary(df, col, plot=True)
+#The created function is applied for all values.
+
+
+
+
+df.groupby(["SaleCityName","ConceptName"])["Price"].mean()
+
+
+
+df.isnull().sum()
+
+df[df["Price"].isnull()]
+#Missing values
+
+
+
+
+
+half_i_l_mean = df.loc[(df["ConceptName"]=="Half Board") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="Low")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Yarım Pansiyon") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=half_i_l_mean
+
+
+room_m_h_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=room_m_h_mean
+
+
+all_m_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_m_h_mean
+
+all_a_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Aydın") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Aydın") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=all_a_h_mean
+
+
+all_other_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_other_h_mean
+
+
+room_other_l_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="Low")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"]=room_other_l_mean
+
+
+room_other_h_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = room_other_h_mean
+
+
+all_i_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_i_h_mean
+
+
+all_a_l_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Antalya") & (df["Seasons"]=="Low")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Antalya") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"] = all_a_l_mean
+
+# Missing values were filled with the mean of other data that met the criteria for missing values.
+#THUS EVERY MISSING VALUE HAS BEEN FILLED ACCORDING TO THEIR CRITERIA
+
+
+
+
+
+
+df.describe([0.25,0.40,0.50,0.55,0.60,0.75,0.85,0.90,0.95,0.97,0.98,0.99]).T
+sns.histplot(df["Price"]);
+sns.boxplot(y=df["Price"]);
+# There are outlier values in the "Price" variable.
+
+
+
+#Let's find outlier limits.
+q1=df["Price"].quantile(0.25)
+q3=df["Price"].quantile(0.75)
+iqr=q3-q1
+lower_limit=q1-1.5*iqr
+upper_limit=q1+1.5*iqr
+print("Lower limit:", lower_limit)
+print("Upper limit:", upper_limit)
+
+outliers = df[(df["Price"] < lower_limit) | (df["Price"] > upper_limit)]
+outliers.head()
+#Outlier table
+
+
+
+
+# Let's see what criteria the outliers are;
+outliers["SaleCityName"].value_counts()
+outliers["ConceptName"].value_counts()
+outliers["Seasons"].value_counts()
+outliers.groupby("ConceptName")["Seasons"].value_counts()
+# It seems that there is a pile of "All Inclusive" and "High" attributes.
+
+
+
+
+outlier_list = []
+for i in outliers.index:
+    outlier_list.append(i)
+# Created a list of outliers
+
+
+
+mean = outliers[outliers["ConceptName"]=="All Included"]["Price"].mean()
+df.loc[outlier_list, "Price"] = mean
+# Outliers were replaced by the average of the "All Inclusive" attribute.
+
+df.describe([0.75,0.80,0.85,0.90]).T
+sns.histplot(df["Price"]);
+sns.boxplot(y=df["Price"]);
+# The maximum value has decreased to 132 and there are no outliers when the graphs are examined.
+
+
+
+### Let's create a table that can predict the price for the new customer.
+agg_df = df.groupby(["SaleCityName","ConceptName","Seasons","EB_Score"]).agg({"Price": "mean"}).sort_values("Price",ascending=False)
+agg_df.reset_index(inplace=True)
+# A new table was created according to the average of the specified variables.
+
+
+#Let's create segments according to price ranges.
+agg_df["SEGMENT"] = pd.qcut(agg_df["Price"], 4, labels=["D","C","B","A"])
+
+
+
+
+agg_df["sales_level_based"] = agg_df[["SaleCityName","ConceptName","Seasons", "EB_Score" ]].agg(lambda x: "_".join(x).upper(),axis=1)
+agg_df.head()
+# A new column named "sales_level_based" has been created. Here is the information of the data will be formed together.
+
+
+
+def customer_info(*args):
+    values = "_".join(args).upper()
+    return agg_df[agg_df["sales_level_based"]==values]
+# A function was created to provide price and segment information when we wrote the attribute.
+
+
+
+
+
+
+# RESULT: If a new customer arrives, when we write the customer's information into the function, it will return the segment and price information of the new customer.
+
+# EXAMPLE
+customer_info("antalya","all included", "low", "early bookers")
