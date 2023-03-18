@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-df = pd.read_csv("Gezinomi.csv",sep=";")
+df = pd.read_excel("Gezinomi.xlsx")
 df.head()
 
 
@@ -17,12 +17,7 @@ df.drop("CInDay", axis=1, inplace=True)
 
 df.head()
 
-df.dtypes   # Price column is object.
-
-df["Price"] = df["Price"].str.replace(",",".").astype("float")
-# Converted "object" to "float"
-
-
+df.dtypes
 
 def check_df(data,head=5):
     print("################ SHAPE ################")
@@ -96,38 +91,41 @@ df[df["Price"].isnull()]
 
 
 half_i_l_mean = df.loc[(df["ConceptName"]=="Half Board") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="Low")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Yarım Pansiyon") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=half_i_l_mean
+df.loc[(df["ConceptName"]=="Half Board") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"]=half_i_l_mean
+
+half_i_h_mean = df.loc[(df["ConceptName"]=="Half Board") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High")]["Price"].mean()
+df.loc[(df["ConceptName"]=="Half Board") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=half_i_h_mean
 
 
 room_m_h_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=room_m_h_mean
+df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=room_m_h_mean
 
 
 all_m_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_m_h_mean
+df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Muğla") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_m_h_mean
 
 all_a_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Aydın") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Aydın") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=all_a_h_mean
+df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Aydın") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"]=all_a_h_mean
 
 
 all_other_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_other_h_mean
+df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_other_h_mean
 
 
 room_other_l_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="Low")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"]=room_other_l_mean
+df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"]=room_other_l_mean
 
 
 room_other_h_mean = df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Oda + Kahvaltı") & (df["SaleCityName"]=="Diğer") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = room_other_h_mean
+df.loc[(df["ConceptName"]=="Room + Breakfast") & (df["SaleCityName"]=="Other") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = room_other_h_mean
 
 
 all_i_h_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_i_h_mean
+df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="İzmir") & (df["Seasons"]=="High") & (df["Price"].isnull()),"Price"] = all_i_h_mean
 
 
 all_a_l_mean = df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Antalya") & (df["Seasons"]=="Low")]["Price"].mean()
-df.loc[(df["ConceptName"]=="Herşey Dahil") & (df["SaleCityName"]=="Antalya") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"] = all_a_l_mean
+df.loc[(df["ConceptName"]=="All Included") & (df["SaleCityName"]=="Antalya") & (df["Seasons"]=="Low") & (df["Price"].isnull()),"Price"] = all_a_l_mean
 
 # Missing values were filled with the mean of other data that met the criteria for missing values.
 #THUS EVERY MISSING VALUE HAS BEEN FILLED ACCORDING TO THEIR CRITERIA
