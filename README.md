@@ -24,6 +24,7 @@ Thus every missing value has been filled according to their criteria.
 
 Outliers found, reviewed and were replaced by the average of the "All Inclusive" attribute.
 There are no outliers anymore.
+
 ![image](https://user-images.githubusercontent.com/98966968/226113264-93317f7f-1860-484f-ad64-c8fb901b9ed8.png)
 
 ### Creating a column for level based segmenetation
