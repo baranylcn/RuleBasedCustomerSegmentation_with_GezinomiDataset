@@ -5,7 +5,7 @@
 
 ### Dropping the variables that are not needed and categorizing the SaleCheckInDiff variable
 
-![image](https://user-images.githubusercontent.com/98966968/226110261-55ff2d43-2c0e-46f9-9894-31b822aeea2b.png)
+![image](https://user-images.githubusercontent.com/98966968/226115482-405d8231-6311-4526-b6bd-dc371e9634ec.png)
 
 These variables were dropped because they would not be useful for our purposes. 
 Created a new column for categorize SaleCheckInDiff.
