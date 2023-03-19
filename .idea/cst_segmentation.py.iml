@@ -28,7 +28,7 @@ def check_df(data,head=5):
     print(data.head(), "\n")
     print("################ TAIL ################")
     print(data.tail(), "\n")
-    print("################ EKSIK DEĞER ################")
+    print("################ MISSING VALUES ################")
     print(data.isnull().any())
     print(data.isnull().sum(), "\n")
     print("################ DESCRIBE ################")
